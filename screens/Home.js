@@ -4,6 +4,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import React, { useState } from "react";
 import { globalStyles } from "../styles/global";
@@ -41,7 +42,10 @@ export default function Home({ navigation }) {
     //navigation.push("ReviewDetails");
   };
   return (
-    <View style={globalStyles.container}>
+    <ImageBackground
+      source={require("../assets/me.jpg")}
+      style={globalStyles.container}
+    >
       <FlatList
         data={reviews}
         renderItem={({ item }) => (
@@ -54,6 +58,6 @@ export default function Home({ navigation }) {
           </TouchableOpacity>
         )}
       />
-    </View>
+    </ImageBackground>
   );
 }
