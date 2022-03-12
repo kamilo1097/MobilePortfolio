@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { globalStyles } from "../styles/global";
+import Card from "../shared/Card";
 
 export default function Home({ navigation }) {
   const [reviews, setReviews] = useState([
@@ -28,6 +29,12 @@ export default function Home({ navigation }) {
       body: "This is Great CS:GO",
       key: "3",
     },
+    {
+      title: "Valorant",
+      rating: 4,
+      body: "This is Valorant game by RIOT",
+      key: "4",
+    },
   ]);
   const pressHandler = () => {
     navigation.navigate("ReviewDetails");
@@ -41,7 +48,9 @@ export default function Home({ navigation }) {
           <TouchableOpacity
             onPress={() => navigation.navigate("ReviewDetails", item)}
           >
-            <Text style={globalStyles.titleText}>{item.title}</Text>
+            <Card>
+              <Text style={globalStyles.titleText}>{item.title}</Text>
+            </Card>
           </TouchableOpacity>
         )}
       />

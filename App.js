@@ -1,9 +1,10 @@
+import "react-native-gesture-handler";
 import { useState } from "react";
 import { Button, StyleSheet, View, FlatList, Text } from "react-native";
 import Home from "./screens/Home";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
-import Navigator from "./routes/HomeStack";
+import Navigator from "./routes/Drawer";
 
 export default function App() {
   let [loaded] = useFonts({
