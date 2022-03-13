@@ -7,12 +7,26 @@ export const globalStyles = StyleSheet.create({
   },
   titleText: {
     fontFamily: "huballi",
-    fontSize: 24,
-    color: "#333",
+    fontSize: 32,
+    color: "#fff",
   },
   paragraph: {
     marginVertical: 8,
     lineHeight: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 10,
+    fontSize: 18,
+    borderRadius: 6,
+  },
+  errorText: {
+    color: "crimson",
+    fontWeight: "bold",
+    marginBottom: 10,
+    marginTop: 6,
+    textAlign: "center",
   },
 });
 
