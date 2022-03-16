@@ -1,4 +1,4 @@
-import { createStackNavigator } from "react-navigation-stack";
+/*import { createStackNavigator } from "react-navigation-stack";
 
 import About from "../screens/About";
 import Header from "../shared/Header";

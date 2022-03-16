@@ -1,9 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform, StatusBar } from "react-native";
 
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingTop: StatusBar.currentHeight,
   },
   titleText: {
     fontFamily: "huballi",
@@ -27,6 +28,18 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 6,
     textAlign: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 28,
+    textTransform: "uppercase",
+  },
+  menuContainer: {
+    flexDirection: "row",
+    width: "100%",
+  },
+  tileMenu: {
+    marginHorizontal: 24,
   },
 });
 

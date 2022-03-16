@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { globalStyles } from "../styles/global";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 
-export default function About({ navigation }) {
+export default function MyProjects({ navigation }) {
   const goBack = () => {
     navigation.goBack();
   };
@@ -15,7 +15,13 @@ export default function About({ navigation }) {
         onPress={goBack}
         style={globalStyles.backIcon}
       />
-      <Text>About screen</Text>
+      <Text>MOJE PROJEKTY</Text>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("ToDoApp")}
+        style={globalStyles.tileMenu}
+      >
+        <Text style={{ backgroundColor: "pink" }}>ToDoApp</Text>
+      </TouchableOpacity>
     </View>
   );
 }

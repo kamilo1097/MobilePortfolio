@@ -4,7 +4,7 @@ import { Button, StyleSheet, View, FlatList, Text } from "react-native";
 import Home from "./screens/Home";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
-import Navigator from "./routes/Drawer";
+import Navigator from "./routes/HomeStack";
 
 export default function App() {
   let [loaded] = useFonts({

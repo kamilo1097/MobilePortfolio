@@ -8,7 +8,7 @@ import React from "react";
 import ListComponent from "./ToDoComponents/ListComponent";
 import HeaderComponent from "./ToDoComponents/HeaderComponent";
 
-export default function ToDoApp() {
+export default function ToDoApp({ navigation }) {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -17,7 +17,7 @@ export default function ToDoApp() {
       }}
     >
       <View style={styles.container}>
-        <HeaderComponent />
+        <HeaderComponent navigation={navigation} />
         <View style={styles.content}>
           {/* <AddToDoComponent /> */}
           <ListComponent />
