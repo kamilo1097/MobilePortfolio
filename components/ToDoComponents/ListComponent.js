@@ -1,23 +1,27 @@
 import { View, FlatList, Alert, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoItemComponent from "./TodoItemComponent";
 import AddToDoComponent from "./AddToDoComponent";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ListComponent() {
-  const [todos, setTodos] = useState([
-    { text: "buy coffe", key: "1" },
-    { text: "Create app", key: "2" },
-    { text: "Play on PC", key: "3" },
-  ]);
+  const [todos, setTodos] = useState("");
   const onPressTodoItem = (key) => {
     setTodos((prevTodos) => {
-      return prevTodos.filter((todo) => todo.key != key);
+      const todosAfterRemove = prevTodos.filter((todo) => todo.key != key);
+      saveData(todosAfterRemove);
+      return todosAfterRemove;
     });
   };
   const submitHandler = (text) => {
     if (text.length > 3) {
       setTodos((prevTodos) => {
-        return [{ text: text, key: Math.random().toString() }, ...prevTodos];
+        const newTodos = [
+          { text: text, key: Math.random().toString() },
+          ...prevTodos,
+        ];
+        saveData(newTodos);
+        return newTodos;
       });
     } else {
       Alert.alert("Ops", "W todo musi znajdować się co najmniej 3 znaki", [
@@ -25,6 +29,24 @@ export default function ListComponent() {
       ]);
     }
   };
+  const saveData = async (value) => {
+    try {
+      await AsyncStorage.setItem("ToDos", JSON.stringify(value));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("ToDos");
+
+      setTodos(JSON.parse(jsonValue));
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <>
       <AddToDoComponent submitHandler={submitHandler} />

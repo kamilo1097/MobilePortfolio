@@ -16,10 +16,7 @@ export default function MyProjects({ navigation }) {
         style={globalStyles.backIcon}
       />
       <Text>MOJE PROJEKTY</Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("ToDoApp")}
-        style={globalStyles.tileMenu}
-      >
+      <TouchableOpacity onPress={() => navigation.navigate("ToDoApp")}>
         <Text style={{ backgroundColor: "pink" }}>ToDoApp</Text>
       </TouchableOpacity>
     </View>

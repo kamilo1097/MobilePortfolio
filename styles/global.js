@@ -40,6 +40,10 @@ export const globalStyles = StyleSheet.create({
   },
   tileMenu: {
     marginHorizontal: 24,
+    height: 50,
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,1)",
+    paddingHorizontal: 10,
   },
 });
 
