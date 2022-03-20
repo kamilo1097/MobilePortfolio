@@ -18,7 +18,7 @@ export default function Pokedex({ navigation }) {
     const res = await axios.get("https://pokeapi.co/api/v2/pokemon", {
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     });
-    const data = await res.data.results.map((m) => m);
+    const data = await res.data.results;
 
     setPokemon(data);
 
@@ -36,10 +36,9 @@ export default function Pokedex({ navigation }) {
 
       <ScrollView>
         <View style={styles.containerOfTiles}>
-          {pokemon &&
-            pokemon.map((item) => (
-              <Pokecard style={styles.tileContainer}>{item}</Pokecard>
-            ))}
+          {pokemon.map((item) => (
+            <Pokecard pokemon={item} />
+          ))}
           {/* <Pokelist pokemon={pokemon} /> */}
         </View>
       </ScrollView>
