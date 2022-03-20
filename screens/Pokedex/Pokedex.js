@@ -36,9 +36,10 @@ export default function Pokedex({ navigation }) {
 
       <ScrollView>
         <View style={styles.containerOfTiles}>
-          {pokemon.map((item) => (
-            <Pokecard style={styles.tileContainer}>{item}</Pokecard>
-          ))}
+          {pokemon &&
+            pokemon.map((item) => (
+              <Pokecard style={styles.tileContainer}>{item}</Pokecard>
+            ))}
           {/* <Pokelist pokemon={pokemon} /> */}
         </View>
       </ScrollView>

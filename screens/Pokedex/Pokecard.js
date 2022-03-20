@@ -25,22 +25,18 @@ export default function Pokecard(props) {
     },
   ];
   const [pokemonData, setPokemonData] = useState([]);
+
   const getPokemonData = async () => {
     const res = await axios.get(url);
-    const pokemonObject = [
-      {
-        pokemonName: res.data.name,
-        pokemonType: res.data.types[0].type.name,
-        pokemonImage: res.data.sprites.other.home.front_default,
-      },
-    ];
-    setPokemonData(pokemonObject);
 
-    console.log(pokemonData[0].pokemonImage);
+    const pokemonObject = await res.data;
+    console.log(pokemonObject.types[0].type.name);
+    console.log(colorsTiles[0][pokemonObject.types[0].type.name]);
+    setPokemonData(pokemonObject);
   };
   useEffect(() => {
     getPokemonData();
-  }, [props]);
+  }, []);
   return (
     <View
       key={props.children.name}
