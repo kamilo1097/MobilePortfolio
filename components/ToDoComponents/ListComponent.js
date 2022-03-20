@@ -5,10 +5,11 @@ import AddToDoComponent from "./AddToDoComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ListComponent() {
-  const [todos, setTodos] = useState("");
+  const [todos, setTodos] = useState([]);
   const onPressTodoItem = (key) => {
     setTodos((prevTodos) => {
       const todosAfterRemove = prevTodos.filter((todo) => todo.key != key);
+
       saveData(todosAfterRemove);
       return todosAfterRemove;
     });
@@ -21,6 +22,7 @@ export default function ListComponent() {
           ...prevTodos,
         ];
         saveData(newTodos);
+
         return newTodos;
       });
     } else {
@@ -37,11 +39,13 @@ export default function ListComponent() {
     }
   };
   const getData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem("ToDos");
+    if (todos !== null) {
+      try {
+        const jsonValue = await AsyncStorage.getItem("ToDos");
 
-      setTodos(JSON.parse(jsonValue));
-    } catch (error) {}
+        setTodos(JSON.parse(jsonValue));
+      } catch (error) {}
+    }
   };
   useEffect(() => {
     getData();

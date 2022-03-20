@@ -2,14 +2,13 @@ import { View, Text, StyleSheet, Button, Image } from "react-native";
 import React from "react";
 import { globalStyles, images } from "../styles/global";
 import Card from "../shared/Card";
-
+import { MaterialIcons, AntDesign } from "@expo/vector-icons";
+import BackButton from "../components/sComponents/BackButton";
 export default function ReviewDetails({ navigation }) {
-  const pressHandler = () => {
-    navigation.goBack();
-  };
   const rating = navigation.getParam("rating");
   return (
     <View style={globalStyles.container}>
+      <BackButton navigation={navigation} />
       <Card>
         <Text>{navigation.getParam("title")}</Text>
         <Text>{navigation.getParam("body")}</Text>

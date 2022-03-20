@@ -1,24 +1,32 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import React from "react";
 import { globalStyles } from "../styles/global";
-import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 
+import BackButton from "../components/sComponents/BackButton";
 export default function MyProjects({ navigation }) {
-  const goBack = () => {
-    navigation.goBack();
-  };
+  const projects = [
+    { text: "ToDo App", direction: "ToDoApp", key: "1" },
+    { text: "Reviews App", direction: "Reviews", key: "2" },
+    { text: "Pokedex", direction: "PokedexMain", key: "3" },
+  ];
   return (
     <View style={globalStyles.container}>
-      <AntDesign
-        name="leftcircleo"
-        size={28}
-        onPress={goBack}
-        style={globalStyles.backIcon}
-      />
+      <BackButton navigation={navigation} />
       <Text>MOJE PROJEKTY</Text>
-      <TouchableOpacity onPress={() => navigation.navigate("ToDoApp")}>
-        <Text style={{ backgroundColor: "pink" }}>ToDoApp</Text>
-      </TouchableOpacity>
+      <FlatList
+        data={projects}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => navigation.navigate(item.direction)}>
+            <Text style={{ backgroundColor: "pink" }}>{item.text}</Text>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 }

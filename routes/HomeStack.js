@@ -10,6 +10,7 @@ import React from "react";
 import Home from "../screens/Home";
 import MyProjects from "../screens/MyProjects";
 import ToDoApp from "../components/ToDoApp";
+import Pokedex from "../screens/Pokedex/Pokedex";
 
 const screens = {
   Default: {
@@ -39,6 +40,23 @@ const screens = {
     navigationOptions: {
       title: "ToDoApp",
     },
+  },
+  Reviews: {
+    screen: ({ navigation }) => {
+      return <Home navigation={navigation} />;
+    },
+    navigationOptions: {
+      title: "Reviews",
+    },
+  },
+  ReviewDetails: {
+    screen: ReviewDetails,
+    navigationOptions: {
+      title: "ReviewDetails",
+    },
+  },
+  PokedexMain: {
+    screen: Pokedex,
   },
 };
 

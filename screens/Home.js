@@ -9,11 +9,12 @@ import {
   ImageBackground,
   Modal,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/Card";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import ReviewForm from "./ReviewForm";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -43,10 +44,15 @@ export default function Home({ navigation }) {
       key: "4",
     },
   ]);
+  const goBack = () => {
+    navigation.goBack();
+  };
   const addReview = (review) => {
     review.key = Math.random().toString();
     setReviews((currentReviews) => {
-      return [review, ...currentReviews];
+      const allReviews = [review, ...currentReviews];
+      saveData(allReviews);
+      return allReviews;
     });
     setModalOpen(false);
   };
@@ -54,11 +60,33 @@ export default function Home({ navigation }) {
     navigation.navigate("ReviewDetails");
     //navigation.push("ReviewDetails");
   };
+  const saveData = async (value) => {
+    try {
+      await AsyncStorage.setItem("Reviews", JSON.stringify(value));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("Reviews");
+      setReviews(JSON.parse(jsonValue));
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <ImageBackground
       source={require("../assets/me.jpg")}
       style={globalStyles.container}
     >
+      <AntDesign
+        name="leftcircleo"
+        size={28}
+        onPress={goBack}
+        style={globalStyles.backIcon}
+      />
       <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.modalContent}>
