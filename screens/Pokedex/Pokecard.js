@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -18,37 +18,39 @@ const colorsTiles = {
   grass: "#E2F9E1",
   water: "#E0F1FD",
 };
-export default function Pokecard(props) {
-  const url = props.pokemon.url;
+export default function Pokecard({ pokemon, setModalOpenForPokemon }) {
+  const url = pokemon.url;
   const pokemonIndex = url.split("/")[url.split("/").length - 2];
-  const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonIndex}.png`;
-
-  {
-    /*Dowiedzieć się dlaczego działa tak a nie inaczej bo podczas pierwszego ładowania jest to troche irytujące */
-  }
-
+  //const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonIndex}.png`;
+  const imageUrl = `https://github.com/HybridShivam/Pokemon/blob/master/assets/images/${pokemonIndex.padStart(
+    3,
+    "0"
+  )}.png?raw=true`;
   const [pokemonData, setPokemonData] = useState(undefined);
+  const [pokemonType, setPokemonType] = useState(undefined);
 
   const getPokemonData = async () => {
     try {
       const res = await axios.get(url);
       setPokemonData(res.data);
+      setPokemonType(res.data.types[0]?.type?.name);
     } catch (err) {}
   };
   useEffect(() => {
     getPokemonData();
   }, []);
   return (
-    <>
+    <TouchableOpacity
+      key={pokemon.name}
+      onPress={() => setModalOpenForPokemon(pokemon.name)}
+      style={[
+        styles.tileContainer,
+        { backgroundColor: typeToColor(pokemonType) },
+      ]}
+    >
       {pokemonData && (
-        <View
-          key={props.pokemon.name}
-          style={[
-            styles.tileContainer,
-            { backgroundColor: typeToColor(pokemonData.types[0].type.name) },
-          ]}
-        >
-          <Text style={styles.pokemonName}>{props.pokemon.name}</Text>
+        <View>
+          <Text style={styles.pokemonName}>{pokemon.name}</Text>
           <View style={styles.imageBG}>
             <Image
               style={styles.pokemonImage}
@@ -59,7 +61,7 @@ export default function Pokecard(props) {
           </View>
         </View>
       )}
-    </>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
   pokemonImage: {
     height: 60,
     width: 60,
+    alignSelf: "center",
   },
   pokemonName: {
     color: "#fff",
@@ -82,6 +85,6 @@ const styles = StyleSheet.create({
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
-    paddingHorizontal: 4,
+    padding: 4,
   },
 });
