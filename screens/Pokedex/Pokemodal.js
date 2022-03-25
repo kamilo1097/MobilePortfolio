@@ -1,131 +1,163 @@
 import {
   View,
   Text,
-  Modal,
   TouchableWithoutFeedback,
   Image,
   StyleSheet,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import * as Progress from "react-native-progress";
 
-export default function Pokemodal({ modalOpen }) {
-  const [tempModalOpen, setTempModalOpen] = useState([]);
-  useEffect(() => {}, []);
+const typeToColor = (pokemonType) => {
+  console.log(pokemonType);
+  return colorsTiles[pokemonType] ?? "white";
+};
+const colorsTiles = {
+  rock: "rgb(148, 81, 81)",
+  ghost: "rgb(247, 247, 247)",
+  electric: "rgb(255, 255, 161)",
+  bug: "#F6D6A7",
+  poison: "#e0a7f6",
+  normal: "#F4F4F4",
+  fairy: "rgba(255, 192, 203, 0.863)",
+  fire: "#FBE3DF",
+  grass: "#E2F9E1",
+  water: "#E0F1FD",
+};
+
+export default function Pokemodal({
+  setModalOpen,
+  pokemonModalData,
+  getPokemonImage,
+}) {
+  const pokemonType = pokemonModalData.types[0].type.name;
   return (
-    <Modal visible={tempModalOpen} animationType="slide">
-      <TouchableWithoutFeedback>
-        <View style={styles.modalContent}>
-          <MaterialIcons
-            style={{ ...styles.modalToggle, ...styles.modalClose }}
-            name="close"
-            size={24}
-            onPress={() => setTempModalOpen(false)}
-          />
-          <View>
-            <View
+    <TouchableWithoutFeedback>
+      <View style={styles.modalContent}>
+        <MaterialIcons
+          style={{ ...styles.modalToggle, ...styles.modalClose }}
+          name="close"
+          size={24}
+          onPress={() => setModalOpen(false)}
+        />
+        <View>
+          <View
+            style={{
+              backgroundColor: typeToColor(pokemonType),
+              justifyContent: "center",
+              alignItems: "center",
+              borderBottomStartRadius: 50,
+              borderBottomEndRadius: 50,
+            }}
+          >
+            <Image
               style={{
-                backgroundColor: "#FBE3DF",
-                justifyContent: "center",
-                alignItems: "center",
-                borderBottomStartRadius: 50,
-                borderBottomEndRadius: 50,
+                height: 180,
+                width: 180,
+                marginVertical: 30,
               }}
-            >
-              <Image
-                style={{
-                  height: 180,
-                  width: 180,
-                  marginVertical: 30,
-                }}
-                source={{
-                  uri: "https://github.com/HybridShivam/Pokemon/blob/master/assets/images/006.png?raw=true",
-                }}
-              />
-            </View>
-            <View>
-              <Text style={styles.pokemonNameStyle}>charizard</Text>
-            </View>
-            <View>
-              <Text style={styles.pokemonTypeBadge}>fire</Text>
-            </View>
-            {/**Kontener ze statami głównymi */}
-            <View style={styles.mainStatContainer}>
-              <View style={styles.statContainer}>
-                <Text style={styles.pokemonStatText}>90.5 KG</Text>
-                <Text style={styles.pokemonStatDescription}>Weight</Text>
-              </View>
-              <View style={styles.statContainer}>
-                <Text style={styles.pokemonStatText}>1.0 M</Text>
-                <Text style={styles.pokemonStatDescription}>Height</Text>
-              </View>
-            </View>
-            {/** KONIEC Kontener ze statami głównymi */}
-            {/* Kontener ze statami (progress bary) */}
-            <View style={styles.progressBarStatsContainer}>
-              <Text style={styles.headerTextOfStats}>Stats</Text>
-              {/*Statsy */}
-              <View style={styles.statsContainer}>
-                <Text style={styles.statsHeaderText}>HP</Text>
-                <Progress.Bar
-                  progress={0.3}
-                  width={200}
-                  color={"#D53943"}
-                  height={20}
-                  borderRadius={20}
-                  animated={true}
-                >
-                  <Text style={styles.textInsideProgressBar}>Test</Text>
-                </Progress.Bar>
-              </View>
-              {/* Koniec Statsy */}
-              {/*Statsy */}
-              <View style={styles.statsContainer}>
-                <Text style={styles.statsHeaderText}>ATK</Text>
-                <Progress.Bar
-                  progress={0.3}
-                  width={200}
-                  color={"#FCA826"}
-                  height={20}
-                >
-                  <Text style={styles.textInsideProgressBar}>Test</Text>
-                </Progress.Bar>
-              </View>
-              {/* Koniec Statsy */}
-              {/*Statsy */}
-              <View style={styles.statsContainer}>
-                <Text style={styles.statsHeaderText}>DEF</Text>
-                <Progress.Bar
-                  progress={0.3}
-                  width={200}
-                  color={"#0191F0"}
-                  height={20}
-                >
-                  <Text style={styles.textInsideProgressBar}>Test</Text>
-                </Progress.Bar>
-              </View>
-              {/* Koniec Statsy */}
-              {/*Statsy */}
-              <View style={styles.statsContainer}>
-                <Text style={styles.statsHeaderText}>SPD</Text>
-                <Progress.Bar
-                  progress={0.3}
-                  width={200}
-                  color={"#8FAFC4"}
-                  height={20}
-                >
-                  <Text style={styles.textInsideProgressBar}>Test</Text>
-                </Progress.Bar>
-              </View>
-              {/* Koniec Statsy */}
-            </View>
-            {/* Kontener ze statami (progress bary) */}
+              source={{
+                uri: getPokemonImage(),
+              }}
+            />
           </View>
+          <View>
+            <Text style={styles.pokemonNameStyle}>
+              {pokemonModalData && pokemonModalData.name}
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={[
+                styles.pokemonTypeBadge,
+                { backgroundColor: typeToColor(pokemonType) },
+              ]}
+            >
+              {pokemonType}
+            </Text>
+          </View>
+          {/**Kontener ze statami głównymi */}
+          <View style={styles.mainStatContainer}>
+            <View style={styles.statContainer}>
+              <Text style={styles.pokemonStatText}>
+                {pokemonModalData.weight / 10} KG
+              </Text>
+              <Text style={styles.pokemonStatDescription}>Weight</Text>
+            </View>
+            <View style={styles.statContainer}>
+              <Text style={styles.pokemonStatText}>
+                {pokemonModalData.height / 10} M
+              </Text>
+              <Text style={styles.pokemonStatDescription}>Height</Text>
+            </View>
+          </View>
+          {/** KONIEC Kontener ze statami głównymi */}
+          {/* Kontener ze statami (progress bary) */}
+          <View style={styles.progressBarStatsContainer}>
+            <Text style={styles.headerTextOfStats}>Stats</Text>
+            {/*Statsy */}
+            <View style={styles.statsContainer}>
+              <Text style={styles.statsHeaderText}>HP</Text>
+              <Progress.Bar
+                progress={0.3}
+                width={200}
+                color={"#D53943"}
+                height={15}
+                borderRadius={20}
+              >
+                <Text style={styles.textInsideProgressBar}>Test</Text>
+              </Progress.Bar>
+            </View>
+            {/* Koniec Statsy */}
+            {/*Statsy */}
+            <View style={styles.statsContainer}>
+              <Text style={styles.statsHeaderText}>ATK</Text>
+              <Progress.Bar
+                progress={0.3}
+                width={200}
+                color={"#FCA826"}
+                height={15}
+                borderRadius={20}
+              >
+                <Text style={styles.textInsideProgressBar}>Test</Text>
+              </Progress.Bar>
+            </View>
+            {/* Koniec Statsy */}
+            {/*Statsy */}
+            <View style={styles.statsContainer}>
+              <Text style={styles.statsHeaderText}>DEF</Text>
+              <Progress.Bar
+                progress={0.3}
+                width={200}
+                color={"#0191F0"}
+                height={15}
+                borderRadius={20}
+              >
+                <Text style={styles.textInsideProgressBar}>Test</Text>
+              </Progress.Bar>
+            </View>
+            {/* Koniec Statsy */}
+            {/*Statsy */}
+            <View style={styles.statsContainer}>
+              <Text style={styles.statsHeaderText}>SPD</Text>
+              <Progress.Bar
+                progress={0.3}
+                width={200}
+                color={"#8FAFC4"}
+                height={15}
+                borderRadius={20}
+              >
+                <Text style={styles.textInsideProgressBar}>Test</Text>
+              </Progress.Bar>
+            </View>
+            {/* Koniec Statsy */}
+          </View>
+          {/* Kontener ze statami (progress bary) */}
         </View>
-      </TouchableWithoutFeedback>
-    </Modal>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 const styles = StyleSheet.create({
@@ -142,12 +174,11 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   pokemonTypeBadge: {
-    backgroundColor: "#FBE3DF",
     width: 100,
     alignSelf: "center",
     textAlign: "center",
     fontSize: 16,
-    color: "white",
+    color: "rgb(217, 222, 219)",
     textShadowColor: "rgba(0, 0, 0, 0.5)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
@@ -189,10 +220,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "80%",
     justifyContent: "space-around",
-    marginVertical: 10,
+    marginVertical: 5,
   },
   statsHeaderText: {
-    fontSize: 15,
+    fontSize: 12,
     marginHorizontal: 6,
     color: "#fff",
     fontWeight: "bold",
@@ -202,6 +233,7 @@ const styles = StyleSheet.create({
     flex: 0,
     alignSelf: "center",
     color: "#fff",
+    fontSize: 11,
     textTransform: "uppercase",
   },
 });

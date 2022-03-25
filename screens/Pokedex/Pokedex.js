@@ -14,6 +14,7 @@ import BackButton from "../../components/sComponents/BackButton";
 import { globalStyles } from "../../styles/global";
 import axios from "axios";
 import Pokecard from "./Pokecard";
+import Pokemodal from "./Pokemodal";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as Progress from "react-native-progress";
 //import Pokelist from "./Pokelist";
@@ -25,6 +26,7 @@ export default function Pokedex({ navigation }) {
   const [nextPageUrl, setNextPageUrl] = useState();
   const [prevPageUrl, setPrevPageUrl] = useState();
   const [modalOpen, setModalOpen] = useState(false);
+
   const [pokemonModalData, setPokemonModalData] = useState();
   const getDataFromApi = async () => {
     let cancel;
@@ -79,119 +81,13 @@ export default function Pokedex({ navigation }) {
       <BackButton navigation={navigation} />
 
       <Modal visible={modalOpen} animationType="slide">
-        <TouchableWithoutFeedback>
-          <View style={styles.modalContent}>
-            <MaterialIcons
-              style={{ ...styles.modalToggle, ...styles.modalClose }}
-              name="close"
-              size={24}
-              onPress={() => setModalOpen(false)}
-            />
-            <View>
-              <View
-                style={{
-                  backgroundColor: "#FBE3DF",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomStartRadius: 50,
-                  borderBottomEndRadius: 50,
-                }}
-              >
-                <Image
-                  style={{
-                    height: 180,
-                    width: 180,
-                    marginVertical: 30,
-                  }}
-                  source={{
-                    uri: getPokemonImage(),
-                  }}
-                />
-              </View>
-              <View>
-                <Text style={styles.pokemonNameStyle}>
-                  {pokemonModalData && pokemonModalData.name}
-                </Text>
-              </View>
-              <View>
-                <Text style={styles.pokemonTypeBadge}>fire</Text>
-              </View>
-              {/**Kontener ze statami głównymi */}
-              <View style={styles.mainStatContainer}>
-                <View style={styles.statContainer}>
-                  <Text style={styles.pokemonStatText}>90.5 KG</Text>
-                  <Text style={styles.pokemonStatDescription}>Weight</Text>
-                </View>
-                <View style={styles.statContainer}>
-                  <Text style={styles.pokemonStatText}>1.0 M</Text>
-                  <Text style={styles.pokemonStatDescription}>Height</Text>
-                </View>
-              </View>
-              {/** KONIEC Kontener ze statami głównymi */}
-              {/* Kontener ze statami (progress bary) */}
-              <View style={styles.progressBarStatsContainer}>
-                <Text style={styles.headerTextOfStats}>Stats</Text>
-                {/*Statsy */}
-                <View style={styles.statsContainer}>
-                  <Text style={styles.statsHeaderText}>HP</Text>
-                  <Progress.Bar
-                    progress={0.3}
-                    width={200}
-                    color={"#D53943"}
-                    height={15}
-                    borderRadius={20}
-                  >
-                    <Text style={styles.textInsideProgressBar}>Test</Text>
-                  </Progress.Bar>
-                </View>
-                {/* Koniec Statsy */}
-                {/*Statsy */}
-                <View style={styles.statsContainer}>
-                  <Text style={styles.statsHeaderText}>ATK</Text>
-                  <Progress.Bar
-                    progress={0.3}
-                    width={200}
-                    color={"#FCA826"}
-                    height={15}
-                    borderRadius={20}
-                  >
-                    <Text style={styles.textInsideProgressBar}>Test</Text>
-                  </Progress.Bar>
-                </View>
-                {/* Koniec Statsy */}
-                {/*Statsy */}
-                <View style={styles.statsContainer}>
-                  <Text style={styles.statsHeaderText}>DEF</Text>
-                  <Progress.Bar
-                    progress={0.3}
-                    width={200}
-                    color={"#0191F0"}
-                    height={15}
-                    borderRadius={20}
-                  >
-                    <Text style={styles.textInsideProgressBar}>Test</Text>
-                  </Progress.Bar>
-                </View>
-                {/* Koniec Statsy */}
-                {/*Statsy */}
-                <View style={styles.statsContainer}>
-                  <Text style={styles.statsHeaderText}>SPD</Text>
-                  <Progress.Bar
-                    progress={0.3}
-                    width={200}
-                    color={"#8FAFC4"}
-                    height={15}
-                    borderRadius={20}
-                  >
-                    <Text style={styles.textInsideProgressBar}>Test</Text>
-                  </Progress.Bar>
-                </View>
-                {/* Koniec Statsy */}
-              </View>
-              {/* Kontener ze statami (progress bary) */}
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
+        {pokemonModalData && (
+          <Pokemodal
+            setModalOpen={setModalOpen}
+            pokemonModalData={pokemonModalData}
+            getPokemonImage={getPokemonImage}
+          />
+        )}
       </Modal>
       <ScrollView>
         <View style={styles.containerOfTiles}>
