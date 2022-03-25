@@ -11,8 +11,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as Progress from "react-native-progress";
 
 const typeToColor = (pokemonType) => {
-  console.log(pokemonType);
   return colorsTiles[pokemonType] ?? "white";
+};
+const preDefinedStats = {
+  maxHP: 300,
+  maxAttack: 300,
+  maxDefense: 300,
+  maxSpeed: 300,
 };
 const colorsTiles = {
   rock: "rgb(148, 81, 81)",
@@ -35,6 +40,13 @@ export default function Pokemodal({
   pokemonModalData,
   getPokemonImage,
 }) {
+  const pokemonStats = {
+    hp: pokemonModalData.stats[0].base_stat,
+    attack: pokemonModalData.stats[1].base_stat,
+    defense: pokemonModalData.stats[2].base_stat,
+    speed: pokemonModalData.stats[5].base_stat,
+  };
+
   const pokemonType = pokemonModalData.types[0].type.name;
   return (
     <TouchableWithoutFeedback>
@@ -104,13 +116,15 @@ export default function Pokemodal({
             <View style={styles.statsContainer}>
               <Text style={styles.statsHeaderText}>HP</Text>
               <Progress.Bar
-                progress={0.3}
+                progress={pokemonStats.hp / preDefinedStats.maxHP}
                 width={200}
                 color={"#D53943"}
                 height={15}
                 borderRadius={20}
               >
-                <Text style={styles.textInsideProgressBar}>Test</Text>
+                <Text style={styles.textInsideProgressBar}>
+                  {pokemonStats.hp}
+                </Text>
               </Progress.Bar>
             </View>
             {/* Koniec Statsy */}
@@ -118,13 +132,15 @@ export default function Pokemodal({
             <View style={styles.statsContainer}>
               <Text style={styles.statsHeaderText}>ATK</Text>
               <Progress.Bar
-                progress={0.3}
+                progress={pokemonStats.attack / preDefinedStats.maxAttack}
                 width={200}
                 color={"#FCA826"}
                 height={15}
                 borderRadius={20}
               >
-                <Text style={styles.textInsideProgressBar}>Test</Text>
+                <Text style={styles.textInsideProgressBar}>
+                  {pokemonStats.attack}
+                </Text>
               </Progress.Bar>
             </View>
             {/* Koniec Statsy */}
@@ -132,13 +148,15 @@ export default function Pokemodal({
             <View style={styles.statsContainer}>
               <Text style={styles.statsHeaderText}>DEF</Text>
               <Progress.Bar
-                progress={0.3}
+                progress={pokemonStats.defense / preDefinedStats.maxDefense}
                 width={200}
                 color={"#0191F0"}
                 height={15}
                 borderRadius={20}
               >
-                <Text style={styles.textInsideProgressBar}>Test</Text>
+                <Text style={styles.textInsideProgressBar}>
+                  {pokemonStats.defense}
+                </Text>
               </Progress.Bar>
             </View>
             {/* Koniec Statsy */}
@@ -146,13 +164,15 @@ export default function Pokemodal({
             <View style={styles.statsContainer}>
               <Text style={styles.statsHeaderText}>SPD</Text>
               <Progress.Bar
-                progress={0.3}
+                progress={pokemonStats.speed / preDefinedStats.maxSpeed}
                 width={200}
                 color={"#8FAFC4"}
                 height={15}
                 borderRadius={20}
               >
-                <Text style={styles.textInsideProgressBar}>Test</Text>
+                <Text style={styles.textInsideProgressBar}>
+                  {pokemonStats.speed}
+                </Text>
               </Progress.Bar>
             </View>
             {/* Koniec Statsy */}

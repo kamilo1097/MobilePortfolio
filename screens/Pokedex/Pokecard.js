@@ -8,7 +8,7 @@ const typeToColor = (pokemonType) => {
 };
 const colorsTiles = {
   rock: "rgb(148, 81, 81)",
-  ghost: "rgb(247, 247, 247)",
+  ghost: "#A292BC",
   electric: "rgb(255, 255, 161)",
   bug: "#F6D6A7",
   poison: "#e0a7f6",
@@ -20,6 +20,10 @@ const colorsTiles = {
   psychic: "#C183C1",
   fighting: "#D67873",
   ground: "#A292BC",
+  dragon: "#A27DFA",
+  steel: "#D1D1E0",
+  ice: "#BCE6E6",
+  dark: "#A29288",
 };
 export default function Pokecard({ pokemon, setModalOpenForPokemon }) {
   const url = pokemon.url;

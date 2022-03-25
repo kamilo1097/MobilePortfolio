@@ -45,7 +45,6 @@ export default function Pokedex({ navigation }) {
     return () => cancel();
   };
   const setModalOpenForPokemon = (pokemonData) => {
-    console.log(pokemonData);
     getPokemonDetailData(pokemonData);
     setModalOpen(true);
   };
@@ -65,7 +64,6 @@ export default function Pokedex({ navigation }) {
         "0"
       )}.png?raw=true`;
     }
-
     return pokemonString;
   };
   const getPokemonDetailData = async (pokemonName) => {
@@ -73,10 +71,7 @@ export default function Pokedex({ navigation }) {
       const data = await axios.get(
         `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
       );
-
       setPokemonModalData(data.data);
-
-      getPokemonImage();
     } catch (err) {}
   };
 
@@ -100,12 +95,13 @@ export default function Pokedex({ navigation }) {
       </Modal>
       <ScrollView>
         <View style={styles.containerOfTiles}>
-          {pokemon.map((item) => (
-            <Pokecard
-              pokemon={item}
-              setModalOpenForPokemon={setModalOpenForPokemon}
-            />
-          ))}
+          {pokemon &&
+            pokemon.map((item) => (
+              <Pokecard
+                pokemon={item}
+                setModalOpenForPokemon={setModalOpenForPokemon}
+              />
+            ))}
           {/* <Pokelist pokemon={pokemon} /> */}
         </View>
       </ScrollView>
