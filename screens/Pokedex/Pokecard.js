@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const typeToColor = (pokemonType) => {
-  console.log(pokemonType);
   return colorsTiles[pokemonType] ?? "white";
 };
 const colorsTiles = {
