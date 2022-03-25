@@ -15,6 +15,7 @@ import { globalStyles } from "../../styles/global";
 import axios from "axios";
 import Pokecard from "./Pokecard";
 import { MaterialIcons } from "@expo/vector-icons";
+import * as Progress from "react-native-progress";
 //import Pokelist from "./Pokelist";
 export default function Pokedex({ navigation }) {
   const [pokemon, setPokemon] = useState([]);
@@ -24,6 +25,7 @@ export default function Pokedex({ navigation }) {
   const [nextPageUrl, setNextPageUrl] = useState();
   const [prevPageUrl, setPrevPageUrl] = useState();
   const [modalOpen, setModalOpen] = useState(false);
+  const [pokemonModalData, setPokemonModalData] = useState();
   const getDataFromApi = async () => {
     let cancel;
     try {
@@ -39,12 +41,37 @@ export default function Pokedex({ navigation }) {
   };
   const setModalOpenForPokemon = (pokemonData) => {
     console.log(pokemonData);
+    getPokemonDetailData(pokemonData);
     setModalOpen(true);
+  };
+  const getPokemonImage = () => {
+    let pokemonString = "";
+    if (pokemonModalData != undefined) {
+      const pokemonIndex = pokemonModalData.id.toString();
+
+      pokemonString = `https://github.com/HybridShivam/Pokemon/blob/master/assets/images/${pokemonIndex.padStart(
+        3,
+        "0"
+      )}.png?raw=true`;
+    }
+
+    return pokemonString;
+  };
+  const getPokemonDetailData = async (pokemonName) => {
+    try {
+      const data = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+      );
+
+      setPokemonModalData(data.data);
+
+      getPokemonImage();
+    } catch (err) {}
   };
 
   useEffect(() => {
     getDataFromApi();
-  }, [currentPageUrl]);
+  }, []);
   return (
     <View
       style={[globalStyles.container, { backgroundColor: "rgb(43,41,44)" }]}
@@ -77,26 +104,91 @@ export default function Pokedex({ navigation }) {
                     marginVertical: 30,
                   }}
                   source={{
-                    uri: "https://github.com/HybridShivam/Pokemon/blob/master/assets/images/006.png?raw=true",
+                    uri: getPokemonImage(),
                   }}
                 />
               </View>
               <View>
-                <Text style={styles.pokemonNameStyle}>charizard</Text>
+                <Text style={styles.pokemonNameStyle}>
+                  {pokemonModalData && pokemonModalData.name}
+                </Text>
               </View>
               <View>
                 <Text style={styles.pokemonTypeBadge}>fire</Text>
               </View>
-              <View style={{ flexDirection: "row" }}>
-                <View>
-                  <Text>90.5KG</Text>
-                  <Text>Weight</Text>
+              {/**Kontener ze statami głównymi */}
+              <View style={styles.mainStatContainer}>
+                <View style={styles.statContainer}>
+                  <Text style={styles.pokemonStatText}>90.5 KG</Text>
+                  <Text style={styles.pokemonStatDescription}>Weight</Text>
                 </View>
-                <View>
-                  <Text>1.0M</Text>
-                  <Text>Height</Text>
+                <View style={styles.statContainer}>
+                  <Text style={styles.pokemonStatText}>1.0 M</Text>
+                  <Text style={styles.pokemonStatDescription}>Height</Text>
                 </View>
               </View>
+              {/** KONIEC Kontener ze statami głównymi */}
+              {/* Kontener ze statami (progress bary) */}
+              <View style={styles.progressBarStatsContainer}>
+                <Text style={styles.headerTextOfStats}>Stats</Text>
+                {/*Statsy */}
+                <View style={styles.statsContainer}>
+                  <Text style={styles.statsHeaderText}>HP</Text>
+                  <Progress.Bar
+                    progress={0.3}
+                    width={200}
+                    color={"#D53943"}
+                    height={15}
+                    borderRadius={20}
+                  >
+                    <Text style={styles.textInsideProgressBar}>Test</Text>
+                  </Progress.Bar>
+                </View>
+                {/* Koniec Statsy */}
+                {/*Statsy */}
+                <View style={styles.statsContainer}>
+                  <Text style={styles.statsHeaderText}>ATK</Text>
+                  <Progress.Bar
+                    progress={0.3}
+                    width={200}
+                    color={"#FCA826"}
+                    height={15}
+                    borderRadius={20}
+                  >
+                    <Text style={styles.textInsideProgressBar}>Test</Text>
+                  </Progress.Bar>
+                </View>
+                {/* Koniec Statsy */}
+                {/*Statsy */}
+                <View style={styles.statsContainer}>
+                  <Text style={styles.statsHeaderText}>DEF</Text>
+                  <Progress.Bar
+                    progress={0.3}
+                    width={200}
+                    color={"#0191F0"}
+                    height={15}
+                    borderRadius={20}
+                  >
+                    <Text style={styles.textInsideProgressBar}>Test</Text>
+                  </Progress.Bar>
+                </View>
+                {/* Koniec Statsy */}
+                {/*Statsy */}
+                <View style={styles.statsContainer}>
+                  <Text style={styles.statsHeaderText}>SPD</Text>
+                  <Progress.Bar
+                    progress={0.3}
+                    width={200}
+                    color={"#8FAFC4"}
+                    height={15}
+                    borderRadius={20}
+                  >
+                    <Text style={styles.textInsideProgressBar}>Test</Text>
+                  </Progress.Bar>
+                </View>
+                {/* Koniec Statsy */}
+              </View>
+              {/* Kontener ze statami (progress bary) */}
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -145,5 +237,51 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: "rgb(43,41,44)",
     flex: 1,
+  },
+  mainStatContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    margin: 20,
+  },
+  pokemonStatText: {
+    color: "white",
+    fontSize: 24,
+  },
+  pokemonStatDescription: {
+    color: "rgb(124, 119, 128)",
+  },
+  statContainer: {
+    marginHorizontal: 25,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  progressBarStatsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerTextOfStats: {
+    fontSize: 26,
+    color: "#fff",
+    marginBottom: 16,
+  },
+  statsContainer: {
+    flexDirection: "row",
+    width: "80%",
+    justifyContent: "space-around",
+    marginVertical: 5,
+  },
+  statsHeaderText: {
+    fontSize: 12,
+    marginHorizontal: 6,
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  textInsideProgressBar: {
+    position: "absolute",
+    flex: 0,
+    alignSelf: "center",
+    color: "#fff",
+    fontSize: 11,
+    textTransform: "uppercase",
   },
 });
