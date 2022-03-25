@@ -17,6 +17,9 @@ const colorsTiles = {
   fire: "#FBE3DF",
   grass: "#E2F9E1",
   water: "#E0F1FD",
+  psychic: "#C183C1",
+  fighting: "#D67873",
+  ground: "#A292BC",
 };
 export default function Pokecard({ pokemon, setModalOpenForPokemon }) {
   const url = pokemon.url;
@@ -38,10 +41,10 @@ export default function Pokecard({ pokemon, setModalOpenForPokemon }) {
   };
   useEffect(() => {
     getPokemonData();
-  }, []);
+  }, [pokemon]);
   return (
     <TouchableOpacity
-      key={pokemon.name}
+      key={pokemon.id}
       onPress={() => setModalOpenForPokemon(pokemon.name)}
       style={[
         styles.tileContainer,

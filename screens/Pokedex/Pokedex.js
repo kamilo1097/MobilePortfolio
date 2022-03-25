@@ -17,6 +17,7 @@ import Pokecard from "./Pokecard";
 import Pokemodal from "./Pokemodal";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as Progress from "react-native-progress";
+import Pagination from "./Pagination";
 //import Pokelist from "./Pokelist";
 export default function Pokedex({ navigation }) {
   const [pokemon, setPokemon] = useState([]);
@@ -31,9 +32,11 @@ export default function Pokedex({ navigation }) {
   const getDataFromApi = async () => {
     let cancel;
     try {
-      const res = await axios.get("https://pokeapi.co/api/v2/pokemon", {
+      const res = await axios.get(currentPageUrl, {
         cancelToken: new axios.CancelToken((c) => (cancel = c)),
       });
+      setNextPageUrl(res.data.next);
+      setPrevPageUrl(res.data.previous);
       const data = await res.data.results;
 
       setPokemon(data);
@@ -45,6 +48,12 @@ export default function Pokedex({ navigation }) {
     console.log(pokemonData);
     getPokemonDetailData(pokemonData);
     setModalOpen(true);
+  };
+  const goToNextPage = () => {
+    setCurrentPageUrl(nextPageUrl);
+  };
+  const goToPrevPage = () => {
+    setCurrentPageUrl(prevPageUrl);
   };
   const getPokemonImage = () => {
     let pokemonString = "";
@@ -73,7 +82,7 @@ export default function Pokedex({ navigation }) {
 
   useEffect(() => {
     getDataFromApi();
-  }, []);
+  }, [currentPageUrl]);
   return (
     <View
       style={[globalStyles.container, { backgroundColor: "rgb(43,41,44)" }]}
@@ -100,6 +109,10 @@ export default function Pokedex({ navigation }) {
           {/* <Pokelist pokemon={pokemon} /> */}
         </View>
       </ScrollView>
+      <Pagination
+        goToNextPage={nextPageUrl ? goToNextPage : null}
+        goToPrevPage={prevPageUrl ? goToPrevPage : null}
+      />
     </View>
   );
 }

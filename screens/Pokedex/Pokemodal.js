@@ -25,6 +25,9 @@ const colorsTiles = {
   fire: "#FBE3DF",
   grass: "#E2F9E1",
   water: "#E0F1FD",
+  psychic: "#C183C1",
+  fighting: "#D67873",
+  ground: "#A292BC",
 };
 
 export default function Pokemodal({
@@ -36,12 +39,6 @@ export default function Pokemodal({
   return (
     <TouchableWithoutFeedback>
       <View style={styles.modalContent}>
-        <MaterialIcons
-          style={{ ...styles.modalToggle, ...styles.modalClose }}
-          name="close"
-          size={24}
-          onPress={() => setModalOpen(false)}
-        />
         <View>
           <View
             style={{
@@ -52,6 +49,12 @@ export default function Pokemodal({
               borderBottomEndRadius: 50,
             }}
           >
+            <MaterialIcons
+              style={styles.modalClose}
+              name="chevron-left"
+              size={32}
+              onPress={() => setModalOpen(false)}
+            />
             <Image
               style={{
                 height: 180,
@@ -178,10 +181,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     fontSize: 16,
-    color: "rgb(217, 222, 219)",
-    textShadowColor: "rgba(0, 0, 0, 0.5)",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
+    color: "rgb(255, 250, 237)",
+    textShadowColor: "rgba(0, 0, 0, 0.9)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 20,
     paddingVertical: 2,
     paddingHorizontal: 16,
     borderRadius: 16,
@@ -235,5 +238,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 11,
     textTransform: "uppercase",
+  },
+  modalClose: {
+    alignSelf: "flex-start",
+    marginLeft: 20,
+    marginBottom: -30,
+    marginTop: 20,
   },
 });
