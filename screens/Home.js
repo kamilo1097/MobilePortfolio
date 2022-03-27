@@ -18,32 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [reviews, setReviews] = useState([
-    {
-      title: "GTA V",
-      rating: 4,
-      body: "This is GTA V",
-      key: "1",
-    },
-    {
-      title: "BF4",
-      rating: 5,
-      body: "This is BF 4",
-      key: "2",
-    },
-    {
-      title: "CS:GO",
-      rating: 3,
-      body: "This is Great CS:GO",
-      key: "3",
-    },
-    {
-      title: "Valorant",
-      rating: 4,
-      body: "This is Valorant game by RIOT",
-      key: "4",
-    },
-  ]);
+  const [reviews, setReviews] = useState([]);
   const goBack = () => {
     navigation.goBack();
   };
@@ -56,10 +31,7 @@ export default function Home({ navigation }) {
     });
     setModalOpen(false);
   };
-  const pressHandler = () => {
-    navigation.navigate("ReviewDetails");
-    //navigation.push("ReviewDetails");
-  };
+
   const saveData = async (value) => {
     try {
       await AsyncStorage.setItem("Reviews", JSON.stringify(value));
@@ -70,8 +42,15 @@ export default function Home({ navigation }) {
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("Reviews");
-      setReviews(JSON.parse(jsonValue));
-    } catch (error) {}
+      if (jsonValue == null) {
+        setReviews([]);
+        return;
+      }
+      setReviews(JSON.parse(await jsonValue));
+      //console.log(await jsonValue);
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     getData();
@@ -107,18 +86,20 @@ export default function Home({ navigation }) {
         style={styles.modalToggle}
         onPress={() => setModalOpen(true)}
       />
-      <FlatList
-        data={reviews}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ReviewDetails", item)}
-          >
-            <Card>
-              <Text style={globalStyles.titleText}>{item.title}</Text>
-            </Card>
-          </TouchableOpacity>
-        )}
-      />
+      {reviews && (
+        <FlatList
+          data={reviews}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ReviewDetails", item)}
+            >
+              <Card>
+                <Text style={globalStyles.titleText}>{item.title}</Text>
+              </Card>
+            </TouchableOpacity>
+          )}
+        />
+      )}
     </ImageBackground>
   );
 }

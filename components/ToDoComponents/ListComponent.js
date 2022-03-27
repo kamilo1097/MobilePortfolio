@@ -42,8 +42,11 @@ export default function ListComponent() {
     if (todos !== null) {
       try {
         const jsonValue = await AsyncStorage.getItem("ToDos");
-
-        setTodos(JSON.parse(jsonValue));
+        if (jsonValue == null) {
+          setTodos([]);
+        } else {
+          setTodos(JSON.parse(jsonValue));
+        }
       } catch (error) {}
     }
   };
