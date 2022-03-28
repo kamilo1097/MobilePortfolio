@@ -47,7 +47,6 @@ export default function Home({ navigation }) {
         return;
       }
       setReviews(JSON.parse(await jsonValue));
-      //console.log(await jsonValue);
     } catch (error) {
       console.log(error);
     }
