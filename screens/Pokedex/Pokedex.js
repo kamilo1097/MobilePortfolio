@@ -27,6 +27,7 @@ export default function Pokedex({ navigation }) {
   const [nextPageUrl, setNextPageUrl] = useState();
   const [prevPageUrl, setPrevPageUrl] = useState();
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [pokemonModalData, setPokemonModalData] = useState();
   const getDataFromApi = async () => {
@@ -40,6 +41,7 @@ export default function Pokedex({ navigation }) {
       const data = await res.data.results;
 
       setPokemon(data);
+      setLoading(false);
     } catch (err) {}
 
     return () => cancel();
@@ -76,41 +78,48 @@ export default function Pokedex({ navigation }) {
   };
 
   useEffect(() => {
+    setLoading(true);
     getDataFromApi();
   }, [currentPageUrl]);
-  return (
-    <View
-      style={[globalStyles.container, { backgroundColor: "rgb(43,41,44)" }]}
-    >
-      <BackButton navigation={navigation} />
 
-      <Modal visible={modalOpen} animationType="slide">
-        {pokemonModalData && (
-          <Pokemodal
-            setModalOpen={setModalOpen}
-            pokemonModalData={pokemonModalData}
-            getPokemonImage={getPokemonImage}
-          />
-        )}
-      </Modal>
-      <ScrollView>
-        <View style={styles.containerOfTiles}>
-          {pokemon &&
-            pokemon.map((item) => (
-              <Pokecard
-                pokemon={item}
-                setModalOpenForPokemon={setModalOpenForPokemon}
-              />
-            ))}
-          {/* <Pokelist pokemon={pokemon} /> */}
-        </View>
-      </ScrollView>
-      <Pagination
-        goToNextPage={nextPageUrl ? goToNextPage : null}
-        goToPrevPage={prevPageUrl ? goToPrevPage : null}
-      />
-    </View>
-  );
+  if (loading) {
+    return <Text>Loading...</Text>;
+  } else {
+    return (
+      <View
+        style={[globalStyles.container, { backgroundColor: "rgb(43,41,44)" }]}
+      >
+        <BackButton navigation={navigation} />
+
+        <Modal visible={modalOpen} animationType="slide">
+          {pokemonModalData && (
+            <Pokemodal
+              setModalOpen={setModalOpen}
+              pokemonModalData={pokemonModalData}
+              getPokemonImage={getPokemonImage}
+            />
+          )}
+        </Modal>
+        <ScrollView>
+          <View style={styles.containerOfTiles}>
+            {pokemon &&
+              pokemon.map((item) => (
+                <Pokecard
+                  key={pokemon.name}
+                  pokemon={item}
+                  setModalOpenForPokemon={setModalOpenForPokemon}
+                />
+              ))}
+            {/* <Pokelist pokemon={pokemon} /> */}
+          </View>
+        </ScrollView>
+        <Pagination
+          goToNextPage={nextPageUrl ? goToNextPage : null}
+          goToPrevPage={prevPageUrl ? goToPrevPage : null}
+        />
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
   containerOfTiles: {
